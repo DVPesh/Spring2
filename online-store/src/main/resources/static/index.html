@@ -54,8 +54,11 @@
             <input type="text" class="form-control" id="newProductPrice" ng-model="newProduct.price" placeholder="Цена">
         </div>
         <div class="col-auto">
-            <input type="text" class="form-control" id="newProductCategoryTitle" ng-model="newProduct.categoryTitle"
-                   placeholder="Название категории">
+            <!--            <input type="text" class="form-control" id="newProductCategoryTitle" ng-model="newProduct.categoryTitle"-->
+            <!--                   placeholder="Название категории">-->
+            <select class="form-control" ng-model="newProduct.categoryTitle" ng-options="t for t in categoryTitles">
+                <option value="">Категория</option>
+            </select>
         </div>
         <div class="col-auto">
             <button type="submit" class="btn btn-primary mb-3">Создать</button>

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.peshekhonov.online.store.entities.Category;
 import ru.peshekhonov.online.store.repositories.CategoryRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,5 +16,9 @@ public class CategoryService {
 
     public Optional<Category> findByTitle(String title) {
         return categoryRepository.findByTitle(title);
+    }
+
+    public List<String> findAllTitles() {
+        return categoryRepository.findAll().stream().map(Category::getTitle).toList();
     }
 }

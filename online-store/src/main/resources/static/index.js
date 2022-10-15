@@ -1,5 +1,9 @@
 angular.module('market', []).controller('indexController', function ($scope, $http) {
     $scope.fillTable = function () {
+        $http.get('http://localhost:8189/market/api/v1/categories')
+            .then(function (response) {
+                $scope.categoryTitles = response.data;
+            });
         $http.get('http://localhost:8189/market/api/v1/products')
             .then(function (response) {
                 $scope.products = response.data;
