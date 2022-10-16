@@ -44,6 +44,20 @@ angular.module('market', []).controller('indexController', function ($scope, $ht
             });
     }
 
+    $scope.subtractFromCart = function (productId) {
+        $http.get('http://localhost:8189/market/api/v1/cart/subtract/' + productId)
+            .then(function (response) {
+                $scope.loadCart();
+            });
+    }
+
+    $scope.removeFromCart = function (productId) {
+        $http.get('http://localhost:8189/market/api/v1/cart/remove/' + productId)
+            .then(function (response) {
+                $scope.loadCart();
+            });
+    }
+
     $scope.clearCart = function () {
         $http.get('http://localhost:8189/market/api/v1/cart/clear')
             .then(function (response) {

@@ -21,4 +21,14 @@ public class CartItem {
         quantity++;
         cost = cost.add(pricePerProduct);
     }
+
+    public int decrementQuantity() {
+        if (--quantity > 0) {
+            cost = cost.subtract(pricePerProduct);
+        } else {
+            quantity = 0;
+            cost = BigDecimal.ZERO;
+        }
+        return quantity;
+    }
 }

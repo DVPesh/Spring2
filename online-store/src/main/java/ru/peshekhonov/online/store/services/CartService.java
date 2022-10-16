@@ -32,6 +32,18 @@ public class CartService {
         cart.add(p);
     }
 
+    public void subtractFromCart(Long productId) {
+        Product p = productService.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Продукт с id: " + productId + " не найден"));
+        cart.subtract(p);
+    }
+
+    public void removeFromCart(Long productId) {
+        Product p = productService.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Продукт с id: " + productId + " не найден"));
+        cart.removeItem(productId);
+    }
+
     public void clear() {
         cart.clear();
     }

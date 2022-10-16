@@ -73,6 +73,7 @@
             <td>Название</td>
             <td>Количество</td>
             <td>Цена</td>
+            <td></td>
         </tr>
         </thead>
         <tbody>
@@ -80,15 +81,24 @@
             <td>{{item.productTitle}}</td>
             <td>{{item.quantity}}</td>
             <td>{{item.pricePerProduct + ' x ' + item.quantity + ' = ' + item.cost}}</td>
+            <td>
+                <button class="btn btn-success" ng-click="subtractFromCart(item.productId)">—</button>
+                <button class="btn btn-success" ng-click="addToCart(item.productId)">+</button>
+                <button class="btn btn-secondary" ng-click="removeFromCart(item.productId)">Удалить</button>
+            </td>
         </tr>
         <tr>
             <td>Итого</td>
             <td></td>
             <td>{{cart.totalCost}}</td>
+            <td>
+                <button class="btn btn-warning" ng-hide="cart.items.length == 0" ng-click="clearCart()">Очистить
+                    корзину
+                </button>
+            </td>
         </tr>
         </tbody>
     </table>
-    <button class="btn btn-warning" ng-click="clearCart()">Очистить корзину</button>
 </div>
 </body>
 </html>

@@ -5,6 +5,7 @@ import ru.peshekhonov.online.store.entities.Product;
 
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 @Data
@@ -30,13 +31,35 @@ public class Cart {
         recalculate();
     }
 
+    public void subtract(Product p) {
+        Iterator<CartItem> iterator = items.iterator();
+        while (iterator.hasNext()) {
+            CartItem item = iterator.next();
+            if (item.getProductId().equals(p.getId())) {
+                if (item.decrementQuantity() < 1) {
+                    iterator.remove();
+                }
+                recalculate();
+                return;
+            }
+        }
+    }
+
     public void clear() {
         items.clear();
         totalCost = null;
     }
 
+    public void removeItem(Long productId) {
+        items.removeIf((item) -> item.getProductId().equals(productId));
+        recalculate();
+    }
+
     private void recalculate() {
         totalCost = BigDecimal.ZERO;
         items.forEach(i -> totalCost = totalCost.add(i.getCost()));
+        if (totalCost.compareTo(BigDecimal.ZERO) == 0) {
+            totalCost = null;
+        }
     }
 }
