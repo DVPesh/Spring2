@@ -12,6 +12,7 @@ import ru.peshekhonov.online.store.utils.Cart;
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
 public class CartController {
+
     private final CartService cartService;
 
     @GetMapping

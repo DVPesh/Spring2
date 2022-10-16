@@ -4,6 +4,7 @@ import lombok.Data;
 import ru.peshekhonov.online.store.entities.Product;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -11,6 +12,10 @@ public class Cart {
 
     private List<CartItem> items;
     private BigDecimal totalCost;
+
+    public List<CartItem> getItems() {
+        return Collections.unmodifiableList(items);
+    }
 
     public void add(Product p) {
         for (CartItem item : items) {
