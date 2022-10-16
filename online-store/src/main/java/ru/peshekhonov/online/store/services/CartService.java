@@ -31,4 +31,8 @@ public class CartService {
                 .orElseThrow(() -> new ResourceNotFoundException("Продукт с id: " + productId + " не найден"));
         cart.add(p);
     }
+
+    public void clear() {
+        cart.clear();
+    }
 }

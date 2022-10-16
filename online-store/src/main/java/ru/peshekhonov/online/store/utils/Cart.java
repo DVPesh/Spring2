@@ -32,7 +32,7 @@ public class Cart {
 
     public void clear() {
         items.clear();
-        totalCost = BigDecimal.ZERO;
+        totalCost = null;
     }
 
     private void recalculate() {

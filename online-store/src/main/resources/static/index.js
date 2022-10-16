@@ -41,7 +41,14 @@ angular.module('market', []).controller('indexController', function ($scope, $ht
         $http.get('http://localhost:8189/market/api/v1/cart/add/' + productId)
             .then(function (response) {
                 $scope.loadCart();
-            })
+            });
+    }
+
+    $scope.clearCart = function () {
+        $http.get('http://localhost:8189/market/api/v1/cart/clear')
+            .then(function (response) {
+                $scope.loadCart();
+            });
     }
 
     $scope.getProducts();
