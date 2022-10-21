@@ -11,6 +11,7 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
                     $scope.user.password = null;
                 }
             }, function errorCallback(response) {
+                alert(response.data.error);
             });
     };
 
