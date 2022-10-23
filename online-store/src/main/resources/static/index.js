@@ -11,6 +11,7 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
 
                     $scope.user.username = null;
                     $scope.user.password = null;
+                    $scope.loadOrders();
                 }
             }, function errorCallback(response) {
                 alert(response.data.error);
@@ -25,12 +26,15 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
     $scope.clearUser = function () {
         delete $localStorage.springWebUser;
         $http.defaults.headers.common.Authorization = '';
+        $scope.myOrders = null;
     };
 
     $scope.isUserLoggedIn = function () {
         if ($localStorage.springWebUser) {
+            $scope.username = $localStorage.springWebUser.username;
             return true;
         } else {
+            $scope.username = null;
             return false;
         }
     };
@@ -108,12 +112,20 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
             data: $scope.orderDetails
         }).then(function (response) {
             $scope.loadCart();
-            $scope.orderDetails = null
+            $scope.orderDetails = null;
+            $scope.loadOrders();
         });
     }
 
     $scope.disabledCheckOut = function () {
         alert("Для оформления заказа необходимо войти в учетную запись.");
+    }
+
+    $scope.loadOrders = function () {
+        $http.get(contextPath + 'api/v1/orders')
+            .then(function (response) {
+                $scope.myOrders = response.data;
+            });
     }
 
     if ($localStorage.springWebUser) {
@@ -131,6 +143,7 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
 
         if ($localStorage.springWebUser) {
             $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.springWebUser.token;
+            $scope.loadOrders();
         }
     }
 

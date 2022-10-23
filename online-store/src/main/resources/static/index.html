@@ -35,6 +35,7 @@
                     </form>
                 </li>
                 <li class="nav-item" ng-show="isUserLoggedIn()" style="padding: 4px;">
+                    <span class="badge badge-pill badge-success">{{username}}</span>
                     <button class="btn btn-outline-secondary btn-sm" ng-click="tryToLogout()">Выйти</button>
                 </li>
             </ul>
@@ -46,14 +47,14 @@
     <p></p>
     <h3>Список товаров</h3>
     <p></p>
-    <table class="table table-hover">
-        <thead>
+    <table class="table table-hover table-bordered">
+        <thead class="table-primary" style="text-align: center; font-weight: bold;">
         <tr>
             <td>ID</td>
             <td>Название</td>
             <td>Цена</td>
             <td>Категория</td>
-            <td></td>
+            <td>Операции</td>
         </tr>
         </thead>
         <tbody>
@@ -93,13 +94,13 @@
     </form>
     <h3>Корзина</h3>
     <p></p>
-    <table class="table table-hover">
-        <thead>
+    <table class="table table-hover table-bordered">
+        <thead class="table-primary" style="text-align: center; font-weight: bold;">
         <tr>
             <td>Название</td>
             <td>Количество</td>
             <td>Цена</td>
-            <td></td>
+            <td>Операции</td>
         </tr>
         </thead>
         <tbody>
@@ -141,6 +142,51 @@
             ng-show="!isUserLoggedIn() && cart.items.length > 0">
         Оформить заказ
     </button>
+    <div ng-show="isUserLoggedIn()">
+        <p></p>
+        <h3>Мои заказы</h3>
+        <p></p>
+        <table class="table table-bordered table-striped">
+            <thead class="table-primary" style="text-align: center; font-weight: bold;">
+            <tr>
+                <td>ID</td>
+                <td>Адрес доставки</td>
+                <td>Телефон</td>
+                <td>Список товаров</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="order in myOrders">
+                <td>{{order.id}}</td>
+                <td>{{order.address}}</td>
+                <td>{{order.phone}}</td>
+                <td style="padding: 0;">
+                    <table class="table table-bordered table-sm" style="margin: 0;">
+                        <thead class="table-primary" style="text-align: center; font-weight: bold;">
+                        <tr>
+                            <td>Название</td>
+                            <td>Количество</td>
+                            <td>Цена</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in order.items">
+                            <td>{{item.productTitle}}</td>
+                            <td>{{item.quantity}}</td>
+                            <td>{{item.pricePerProduct + ' x ' + item.quantity + ' = ' + item.cost}}</td>
+                        </tr>
+                        <tr>
+                            <td>Итого</td>
+                            <td></td>
+                            <td>{{order.totalCost}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>

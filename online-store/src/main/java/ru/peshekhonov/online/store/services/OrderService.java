@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.peshekhonov.online.store.dto.OrderDetailsDto;
+import ru.peshekhonov.online.store.dto.OrderDto;
 import ru.peshekhonov.online.store.entities.Order;
 import ru.peshekhonov.online.store.entities.OrderItem;
 import ru.peshekhonov.online.store.entities.Visitor;
 import ru.peshekhonov.online.store.exceptions.ResourceNotFoundException;
+import ru.peshekhonov.online.store.mappers.OrderDtoMapper;
 import ru.peshekhonov.online.store.repositories.OrderRepository;
 import ru.peshekhonov.online.store.utils.Cart;
 
@@ -23,6 +25,7 @@ public class OrderService {
     private final CartService cartService;
     private final ProductService productService;
     private final OrderItemService orderItemService;
+    private final OrderDtoMapper orderDtoMapper;
 
     @Transactional
     public void createOrder(Visitor visitor, Optional<OrderDetailsDto> orderDetailsDto) {
@@ -54,5 +57,9 @@ public class OrderService {
 
     public List<Order> findOrdersByUsername(String username) {
         return orderRepository.findAllByUsername(username);
+    }
+
+    public List<OrderDto> findAllOrderDtoByUsername(String username) {
+        return orderDtoMapper.map(orderRepository.findAllByUsername(username));
     }
 }
