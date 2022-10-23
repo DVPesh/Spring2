@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.peshekhonov.online.store.dto.ProductDto;
-import ru.peshekhonov.online.store.entities.Product;
 import ru.peshekhonov.online.store.exceptions.ResourceNotFoundException;
 import ru.peshekhonov.online.store.services.ProductService;
 
@@ -18,8 +17,8 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.findAll();
+    public List<ProductDto> getAllProducts() {
+        return productService.findAllProductDto();
     }
 
     @GetMapping("/{id}")

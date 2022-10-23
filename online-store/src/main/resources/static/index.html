@@ -61,7 +61,7 @@
             <td>{{p.id}}</td>
             <td>{{p.title}}</td>
             <td>{{p.price}}</td>
-            <td>{{p.category.title}}</td>
+            <td>{{p.categoryTitle}}</td>
             <td>
                 <button class="btn btn-primary" ng-click="addToCart(p.id)">Добавить в корзину</button>
                 <button class="btn btn-danger" ng-click="deleteProduct(p.id)">Удалить из списка</button>
@@ -125,6 +125,22 @@
         </tr>
         </tbody>
     </table>
+    <p></p>
+    <h3>Детали заказа</h3>
+    <form novalidate>
+        <input class="form-control" type="tel" placeholder="Номер телефона получателя" ng-model="orderDetails.phone">
+        <p></p>
+        <input class="form-control" type="text" placeholder="Адрес доставки" ng-model="orderDetails.address">
+        <p></p>
+    </form>
+
+    <button class="btn btn-primary" ng-click="checkOut()" ng-show="isUserLoggedIn() && cart.items.length > 0">
+        Оформить заказ
+    </button>
+    <button class="btn btn-secondary" ng-click="disabledCheckOut()"
+            ng-show="!isUserLoggedIn() && cart.items.length > 0">
+        Оформить заказ
+    </button>
 </div>
 </body>
 </html>

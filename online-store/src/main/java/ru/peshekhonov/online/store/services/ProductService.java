@@ -22,6 +22,10 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public List<ProductDto> findAllProductDto() {
+        return mapper.map(productRepository.findAll());
+    }
+
     public void deleteById(Long id) {
         productRepository.deleteById(id);
     }
