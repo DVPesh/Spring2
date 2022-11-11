@@ -10,6 +10,8 @@ import ru.peshekhonov.online.store.entities.Product;
 import ru.peshekhonov.online.store.exceptions.ResourceNotFoundException;
 import ru.peshekhonov.online.store.services.CategoryService;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface ProductDtoMapper {
 
@@ -29,4 +31,6 @@ public interface ProductDtoMapper {
     default String getCategoryTitle(Category category) {
         return category.getTitle();
     }
+
+    List<ProductDto> map(List<Product> products);
 }

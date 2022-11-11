@@ -1,4 +1,4 @@
-package ru.peshekhonov.online.store.exceptions;
+package ru.peshekhonov.online.store.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class AppError {
+public class JwtRequest {
 
-    private String code;
-    private String error;
+    private String username;
+    private String password;
 }

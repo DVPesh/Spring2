@@ -1,0 +1,63 @@
+<!DOCTYPE html><!doctype html>
+
+<html ng-app="statistic">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="statistic.js"></script>
+</head>
+
+<body>
+
+<div class="container" ng-controller="statisticController">
+    <p></p>
+    <h1>Статистика</h1>
+    <p></p>
+    <h3>Время работы сервисов</h3>
+    <p></p>
+    <table class="table table-hover table-bordered">
+        <thead class="table-primary" style="text-align: center; font-weight: bold;">
+        <tr>
+            <td>Сервис</td>
+            <td>Время работы, мс</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>CartService</td>
+            <td>{{statistic.cartService}}</td>
+        </tr>
+        <tr>
+            <td>OrderService</td>
+            <td>{{statistic.orderService}}</td>
+        </tr>
+        <tr>
+            <td>OrderItemService</td>
+            <td>{{statistic.orderItemService}}</td>
+        </tr>
+        <tr>
+            <td>RoleService</td>
+            <td>{{statistic.roleService}}</td>
+        </tr>
+        <tr>
+            <td>CategoryService</td>
+            <td>{{statistic.categoryService}}</td>
+        </tr>
+        <tr>
+            <td>ProductService</td>
+            <td>{{statistic.productService}}</td>
+        </tr>
+        <tr>
+            <td>VisitorService</td>
+            <td>{{statistic.visitorService}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

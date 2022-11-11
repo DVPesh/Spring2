@@ -1,13 +1,13 @@
-CREATE TABLE categories
+CREATE TABLE IF NOT EXISTS categories
 (
     id         bigint       NOT NULL AUTO_INCREMENT,
     title      varchar(255) NOT NULL,
     created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='таблица категорий продуктов';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='таблица категорий продуктов';
 
-CREATE TABLE products
+CREATE TABLE IF NOT EXISTS products
 (
     id          bigint        NOT NULL AUTO_INCREMENT,
     title       varchar(255)  NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE products
     PRIMARY KEY (id),
     KEY           fk_product_category_idx (category_id),
     CONSTRAINT fk_product_category FOREIGN KEY (category_id) REFERENCES categories (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='таблица продуктов';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='таблица продуктов';
 
 INSERT INTO categories (title) values
     ('продукты питания и напитки'),
