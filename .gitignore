@@ -52,6 +52,7 @@ cmake-build-*/
 # IntelliJ
 out/
 online-store/target
+homework6/api/target
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
