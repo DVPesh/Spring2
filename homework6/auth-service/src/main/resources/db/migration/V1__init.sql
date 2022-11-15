@@ -42,9 +42,10 @@ values ('ROLE_USER'),
        ('ROLE_ADMIN');
 
 insert into visitors (username, password, email)
-values ('Нина', '$2a$12$wuyCR4n295tUNf82kVp1H.h66PxjsTZHEGLJfzlw4Qqf4fbJTQcpu', 'nina@mail.ru'),
-       ('Олег', '$2a$12$oi8NTLJyxhDham6lhr7K8.iuP916Tc5ygLmZhWKlSh8u2Oobb0I/i', 'oleg@mail.ru'),
-       ('Николай', '$2a$12$7Z1m9cW.Huh4sCiNAqWVOeoIVo55mLMhx8b9XqRiBUNnTnOb3eRk.', 'nick@mail.ru');
+values ('Dima', '$2a$12$kHYybMz2P4hCtq7GW.wf3.LamFg338C48zvPdbudyzmxCN8LuQCei', 'dima@mail.ru'),
+       ('Oleg', '$2a$12$G628fF.N.y/xcEUhUvF67u0nLfmeenasXnVaDG/ita2pgsCxIsQWK', 'oleg@mail.ru'),
+       ('Ann', '$2a$12$zAY4wh7CXHkveqvPTUTuuOXql5tHYbt12V3ePphiU8EoSV38o8m4G', 'ann@mail.ru'),
+       ('Peter', '$2a$12$myTKY4SMKfZ/6ldoUYYh7uqLt4Y8XgPtz1JbuYRHbGWbpKF3tEyte', 'peter@mail.ru');
 
 insert into visitors_roles (visitor_id, role_id)
 values (1, 1),
