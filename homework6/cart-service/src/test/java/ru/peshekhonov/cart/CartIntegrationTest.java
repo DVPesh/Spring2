@@ -53,6 +53,7 @@ public class CartIntegrationTest {
         ResponseEntity<CartDto> entity = restTemplate.getForEntity("/api/v1/cart", CartDto.class);
         Assertions.assertSame(entity.getStatusCode(), HttpStatus.OK);
         Assertions.assertEquals(0, Objects.requireNonNull(entity.getBody()).getItems().size());
+        Assertions.assertNull(Objects.requireNonNull(entity.getBody()).getTotalCost());
     }
 
     @Test
@@ -127,5 +128,44 @@ public class CartIntegrationTest {
         Assertions.assertEquals(1L, (int) Objects.requireNonNull(entity.getBody()).getItems().get(1).getQuantity());
         Assertions.assertEquals(BigDecimal.valueOf(1500), (BigDecimal) Objects.requireNonNull(entity.getBody()).getItems().get(1).getPricePerProduct());
         Assertions.assertEquals(BigDecimal.valueOf(1500), (BigDecimal) Objects.requireNonNull(entity.getBody()).getItems().get(1).getCost());
+    }
+
+    @Test
+    @Order(4)
+    public void cartControllerRemoveProductFromCartTest() {
+        ResponseEntity<CartDto> entity;
+        HttpStatus status;
+
+        status = restTemplate.getForEntity("/api/v1/cart/remove/{productId}", Object.class, 5)
+                .getStatusCode();
+        Assertions.assertSame(status, HttpStatus.OK);
+
+        entity = restTemplate.getForEntity("/api/v1/cart", CartDto.class);
+        Assertions.assertSame(entity.getStatusCode(), HttpStatus.OK);
+        Assertions.assertEquals(1, Objects.requireNonNull(entity.getBody()).getItems().size());
+
+        Assertions.assertEquals(BigDecimal.valueOf(98.35), (BigDecimal) Objects.requireNonNull(entity.getBody()).getTotalCost());
+
+        Assertions.assertEquals(2L, (long) Objects.requireNonNull(entity.getBody()).getItems().get(0).getProductId());
+        Assertions.assertEquals("бананы", Objects.requireNonNull(entity.getBody()).getItems().get(0).getProductTitle());
+        Assertions.assertEquals(1L, (int) Objects.requireNonNull(entity.getBody()).getItems().get(0).getQuantity());
+        Assertions.assertEquals(BigDecimal.valueOf(98.35), (BigDecimal) Objects.requireNonNull(entity.getBody()).getItems().get(0).getPricePerProduct());
+        Assertions.assertEquals(BigDecimal.valueOf(98.35), (BigDecimal) Objects.requireNonNull(entity.getBody()).getItems().get(0).getCost());
+    }
+
+    @Test
+    @Order(5)
+    public void cartControllerClearTest() {
+        ResponseEntity<CartDto> entity;
+        HttpStatus status;
+
+        status = restTemplate.getForEntity("/api/v1/cart/clear", Object.class)
+                .getStatusCode();
+        Assertions.assertSame(status, HttpStatus.OK);
+
+        entity = restTemplate.getForEntity("/api/v1/cart", CartDto.class);
+        Assertions.assertSame(entity.getStatusCode(), HttpStatus.OK);
+        Assertions.assertEquals(0, Objects.requireNonNull(entity.getBody()).getItems().size());
+        Assertions.assertNull(Objects.requireNonNull(entity.getBody()).getTotalCost());
     }
 }
