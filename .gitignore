@@ -53,6 +53,7 @@ cmake-build-*/
 out/
 online-store/target
 homework6/api/target
+homework8/target
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
