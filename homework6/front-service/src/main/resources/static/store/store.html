@@ -47,7 +47,9 @@
                     <td>{{p.categoryTitle}}</td>
                     <td>
                         <button class="btn btn-primary" ng-click="addToCart(p.id)">В корзину</button>
-                        <button class="btn btn-danger" ng-click="deleteProduct(p.id)">Удалить</button>
+                        <button class="btn btn-danger" ng-click="deleteProduct(p.id)" ng-show="hasUserTheManagerRole()">
+                            Удалить
+                        </button>
                     </td>
                 </tr>
                 </tbody>
@@ -62,25 +64,27 @@
             </nav>
         </div>
     </div>
-
-    <h3>Добавить продукт</h3>
-    <form class="row g-3" ng-submit="createNewProduct()">
-        <div class="col-auto">
-            <input type="text" class="form-control" id="newProductTitle" ng-model="newProduct.title"
-                   placeholder="Название">
-        </div>
-        <div class="col-auto">
-            <input type="text" class="form-control" id="newProductPrice" ng-model="newProduct.price" placeholder="Цена">
-        </div>
-        <div class="col-auto">
-            <!--            <input type="text" class="form-control" id="newProductCategoryTitle" ng-model="newProduct.categoryTitle"-->
-            <!--                   placeholder="Название категории">-->
-            <select class="form-control" ng-model="newProduct.categoryTitle" ng-options="t for t in categoryTitles">
-                <option value="">Категория</option>
-            </select>
-        </div>
-        <div class="col-auto">
-            <button type="submit" class="btn btn-primary mb-3">Создать</button>
-        </div>
-    </form>
+    <div ng-show="hasUserTheManagerRole()">
+        <h3>Добавить продукт</h3>
+        <form class="row g-3" ng-submit="createNewProduct()">
+            <div class="col-auto">
+                <input type="text" class="form-control" id="newProductTitle" ng-model="newProduct.title"
+                       placeholder="Название">
+            </div>
+            <div class="col-auto">
+                <input type="text" class="form-control" id="newProductPrice" ng-model="newProduct.price"
+                       placeholder="Цена">
+            </div>
+            <div class="col-auto">
+                <!--            <input type="text" class="form-control" id="newProductCategoryTitle" ng-model="newProduct.categoryTitle"-->
+                <!--                   placeholder="Название категории">-->
+                <select class="form-control" ng-model="newProduct.categoryTitle" ng-options="t for t in categoryTitles">
+                    <option value="">Категория</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3">Добавить</button>
+            </div>
+        </form>
+    </div>
 </div>

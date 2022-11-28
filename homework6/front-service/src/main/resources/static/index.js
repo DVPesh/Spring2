@@ -54,11 +54,14 @@ angular.module('market').controller('indexController', function ($rootScope, $sc
             .then(function successCallback(response) {
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
-                    $localStorage.springWebUser = {username: $scope.user.username, token: response.data.token};
+                    $localStorage.springWebUser = {
+                        username: $scope.user.username,
+                        token: response.data.token,
+                        roles: response.data.roles
+                    };
                     $rootScope.username = $scope.user.username;
                     $scope.user.username = null;
                     $scope.user.password = null;
-
                     $location.path('/');
                 }
             }, function errorCallback(response) {
@@ -80,5 +83,9 @@ angular.module('market').controller('indexController', function ($rootScope, $sc
 
     $rootScope.isUserLoggedIn = function () {
         return !!$localStorage.springWebUser;
+    }
+
+    $rootScope.hasUserTheManagerRole = function () {
+        return $localStorage.springWebUser ? $localStorage.springWebUser.roles.includes('ROLE_MANAGER') : false;
     }
 });
