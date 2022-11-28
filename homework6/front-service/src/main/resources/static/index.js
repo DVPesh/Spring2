@@ -1,6 +1,6 @@
 (function () {
     angular
-        .module('market', ['ngRoute', 'ngStorage'])
+        .module('market', ['ngRoute', 'ngStorage', 'angularUtils.directives.dirPagination'])
         .config(config)
         .run(run);
 

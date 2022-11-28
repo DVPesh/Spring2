@@ -15,17 +15,11 @@ angular.module('market').controller('storeController', function ($scope, $http, 
             }
         }).then(function (response) {
             $scope.products = response.data.content;
-            $scope.paginationArray = $scope.generatePagesIndexes(1, response.data.totalPages);
+            $scope.totalProducts = response.data.totalElements;
+            $scope.productsPerPage = response.data.pageable.pageSize;
+            $scope.pageNumber = response.data.pageable.pageNumber + 1;
             // console.log(response);
         });
-    }
-
-    $scope.generatePagesIndexes = function (startPage, endPage) {
-        let arr = [];
-        for (let i = startPage; i < endPage + 1; i++) {
-            arr.push(i);
-        }
-        return arr;
     }
 
     $scope.deleteProduct = function (id) {

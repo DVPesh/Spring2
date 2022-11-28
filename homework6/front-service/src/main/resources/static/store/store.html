@@ -40,7 +40,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="p in products">
+                <tr dir-paginate="p in products | itemsPerPage: productsPerPage" total-items="totalProducts"
+                    current-page="pageNumber">
                     <td>{{p.id}}</td>
                     <td>{{p.title}}</td>
                     <td>{{p.price}}</td>
@@ -54,14 +55,8 @@
                 </tr>
                 </tbody>
             </table>
-            <p></p>
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <li class="page-item" ng-repeat="pageIndex in paginationArray">
-                        <button class="page-link" ng-click="getProducts(pageIndex)">{{pageIndex}}</button>
-                    </li>
-                </ul>
-            </nav>
+            <dir-pagination-controls on-page-change="getProducts(newPageNumber)"
+                                     template-url="dirPaginationPattern.html"></dir-pagination-controls>
         </div>
     </div>
     <div ng-show="hasUserTheManagerRole()">
