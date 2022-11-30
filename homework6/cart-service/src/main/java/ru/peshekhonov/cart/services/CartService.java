@@ -2,54 +2,53 @@ package ru.peshekhonov.cart.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import ru.peshekhonov.api.dto.ProductDto;
 import ru.peshekhonov.cart.integrations.ProductServiceIntegration;
 import ru.peshekhonov.cart.utils.Cart;
 
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor
 public class CartService {
 
     private final ProductServiceIntegration productService;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Value("${cart-service.cart-prefix}")
     private String cartPrefix;
 
-    private Map<String, Cart> carts;
-
-    @PostConstruct
-    public void init() {
-        carts = new HashMap<>();
-    }
-
     public Cart getCurrentCart(String cartId) {
         String id = cartPrefix + cartId;
-        if (!carts.containsKey(id)) {
-            carts.put(id, new Cart());
+        if (Boolean.FALSE.equals(redisTemplate.hasKey(id))) {
+            redisTemplate.opsForValue().set(id, new Cart());
         }
-        return carts.get(id);
+        return (Cart) redisTemplate.opsForValue().get(id);
     }
 
     public void addToCart(String cartId, Long productId) {
         ProductDto p = productService.findById(productId);
-        getCurrentCart(cartId).add(p);
+        execute(cartId, cart -> cart.add(p));
     }
 
     public void subtractFromCart(String cartId, Long productId) {
         ProductDto p = productService.findById(productId);
-        getCurrentCart(cartId).subtract(p);
+        execute(cartId, cart -> cart.subtract(p));
     }
 
     public void removeFromCart(String cartId, Long productId) {
-        getCurrentCart(cartId).removeItem(productId);
+        execute(cartId, cart -> cart.removeItem(productId));
     }
 
     public void clear(String cartId) {
-        getCurrentCart(cartId).clear();
+        execute(cartId, Cart::clear);
+    }
+
+    private void execute(String cartId, Consumer<Cart> operation) {
+        Cart cart = getCurrentCart(cartId);
+        operation.accept(cart);
+        redisTemplate.opsForValue().set(cartPrefix + cartId, cart);
     }
 }

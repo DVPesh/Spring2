@@ -13,7 +13,7 @@
         <module name="api" />
         <module name="gateway-service" />
       </profile>
-      <profile name="Annotation profile for core-service" enabled="true">
+      <profile name="Annotation profile for cart-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -22,8 +22,8 @@
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.5.2.Final/mapstruct-processor-1.5.2.Final.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.5.2.Final/mapstruct-1.5.2.Final.jar" />
         </processorPath>
-        <module name="core-service" />
         <module name="cart-service" />
+        <module name="core-service" />
         <module name="online-store" />
       </profile>
     </annotationProcessing>
