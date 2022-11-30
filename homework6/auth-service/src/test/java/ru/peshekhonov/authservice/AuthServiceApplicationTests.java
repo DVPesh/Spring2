@@ -43,7 +43,7 @@ class AuthServiceApplicationTests {
                 .andReturn();
 
         String token = result.getResponse().getContentAsString();
-        token = token.replace("{\"token\":\"", "").replace("\"}", "");
+        token = token.split("\",\"", 2)[0].replace("{\"token\":\"", "");
 
         Assertions.assertThat(jwtTokenUtil.getUsernameFromToken(token))
                 .isEqualTo("Dima Petrov");

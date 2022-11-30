@@ -14,7 +14,9 @@ import ru.peshekhonov.cart.integrations.ProductServiceIntegration;
 import ru.peshekhonov.cart.services.CartService;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Objects;
+import java.util.UUID;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -26,6 +28,14 @@ public class CartIntegrationTest {
     private CartService cartService;
     @MockBean
     private ProductServiceIntegration productService;
+    private static String uuid;
+    private static String username;
+
+    @BeforeAll
+    public static void init() {
+        uuid = UUID.randomUUID().toString();
+        username = "Oleg";
+    }
 
     @BeforeEach
     public void setUp() {
@@ -43,14 +53,21 @@ public class CartIntegrationTest {
 
         Mockito.when(productService.findById(2L)).thenReturn(productWithId2);
         Mockito.when(productService.findById(5L)).thenReturn(productWithId5);
+
+        restTemplate.getRestTemplate().setInterceptors(
+                Collections.singletonList((request, body, execution) -> {
+                    request.getHeaders()
+                            .add("username", username);
+                    return execution.execute(request, body);
+                }));
     }
 
     @Test
     @Order(1)
     public void cartControllerGetEmptyCartTest() {
-        cartService.getCurrentCart().clear();
+        cartService.getCurrentCart(getCartId(username, uuid)).clear();
 
-        ResponseEntity<CartDto> entity = restTemplate.getForEntity("/api/v1/cart", CartDto.class);
+        ResponseEntity<CartDto> entity = restTemplate.getForEntity("/api/v1/cart/" + uuid, CartDto.class);
         Assertions.assertSame(entity.getStatusCode(), HttpStatus.OK);
         Assertions.assertEquals(0, Objects.requireNonNull(entity.getBody()).getItems().size());
         Assertions.assertNull(Objects.requireNonNull(entity.getBody()).getTotalCost());
@@ -62,27 +79,27 @@ public class CartIntegrationTest {
         ResponseEntity<CartDto> entity;
         HttpStatus status;
 
-        status = restTemplate.getForEntity("/api/v1/cart/add/{productId}", Object.class, 2)
+        status = restTemplate.getForEntity("/api/v1/cart/" + uuid + "/add/{productId}", Object.class, 2)
                 .getStatusCode();
         Assertions.assertSame(status, HttpStatus.OK);
 
-        entity = restTemplate.getForEntity("/api/v1/cart", CartDto.class);
+        entity = restTemplate.getForEntity("/api/v1/cart/" + uuid, CartDto.class);
         Assertions.assertSame(entity.getStatusCode(), HttpStatus.OK);
         Assertions.assertEquals(1, Objects.requireNonNull(entity.getBody()).getItems().size());
 
-        status = restTemplate.getForEntity("/api/v1/cart/add/{productId}", Object.class, 5)
+        status = restTemplate.getForEntity("/api/v1/cart/" + uuid + "/add/{productId}", Object.class, 5)
                 .getStatusCode();
         Assertions.assertSame(entity.getStatusCode(), HttpStatus.OK);
 
-        entity = restTemplate.getForEntity("/api/v1/cart", CartDto.class);
+        entity = restTemplate.getForEntity("/api/v1/cart/" + uuid, CartDto.class);
         Assertions.assertSame(entity.getStatusCode(), HttpStatus.OK);
         Assertions.assertEquals(2, Objects.requireNonNull(entity.getBody()).getItems().size());
 
-        status = restTemplate.getForEntity("/api/v1/cart/add/{productId}", Object.class, 5)
+        status = restTemplate.getForEntity("/api/v1/cart/" + uuid + "/add/{productId}", Object.class, 5)
                 .getStatusCode();
         Assertions.assertSame(status, HttpStatus.OK);
 
-        entity = restTemplate.getForEntity("/api/v1/cart", CartDto.class);
+        entity = restTemplate.getForEntity("/api/v1/cart/" + uuid, CartDto.class);
         Assertions.assertSame(entity.getStatusCode(), HttpStatus.OK);
         Assertions.assertEquals(2, Objects.requireNonNull(entity.getBody()).getItems().size());
 
@@ -107,11 +124,11 @@ public class CartIntegrationTest {
         ResponseEntity<CartDto> entity;
         HttpStatus status;
 
-        status = restTemplate.getForEntity("/api/v1/cart/subtract/{productId}", Object.class, 5)
+        status = restTemplate.getForEntity("/api/v1/cart/" + uuid + "/subtract/{productId}", Object.class, 5)
                 .getStatusCode();
         Assertions.assertSame(status, HttpStatus.OK);
 
-        entity = restTemplate.getForEntity("/api/v1/cart", CartDto.class);
+        entity = restTemplate.getForEntity("/api/v1/cart/" + uuid, CartDto.class);
         Assertions.assertSame(entity.getStatusCode(), HttpStatus.OK);
         Assertions.assertEquals(2, Objects.requireNonNull(entity.getBody()).getItems().size());
 
@@ -136,11 +153,11 @@ public class CartIntegrationTest {
         ResponseEntity<CartDto> entity;
         HttpStatus status;
 
-        status = restTemplate.getForEntity("/api/v1/cart/remove/{productId}", Object.class, 5)
+        status = restTemplate.getForEntity("/api/v1/cart/" + uuid + "/remove/{productId}", Object.class, 5)
                 .getStatusCode();
         Assertions.assertSame(status, HttpStatus.OK);
 
-        entity = restTemplate.getForEntity("/api/v1/cart", CartDto.class);
+        entity = restTemplate.getForEntity("/api/v1/cart/" + uuid, CartDto.class);
         Assertions.assertSame(entity.getStatusCode(), HttpStatus.OK);
         Assertions.assertEquals(1, Objects.requireNonNull(entity.getBody()).getItems().size());
 
@@ -159,13 +176,20 @@ public class CartIntegrationTest {
         ResponseEntity<CartDto> entity;
         HttpStatus status;
 
-        status = restTemplate.getForEntity("/api/v1/cart/clear", Object.class)
+        status = restTemplate.getForEntity("/api/v1/cart/" + uuid + "/clear", Object.class)
                 .getStatusCode();
         Assertions.assertSame(status, HttpStatus.OK);
 
-        entity = restTemplate.getForEntity("/api/v1/cart", CartDto.class);
+        entity = restTemplate.getForEntity("/api/v1/cart/" + uuid, CartDto.class);
         Assertions.assertSame(entity.getStatusCode(), HttpStatus.OK);
         Assertions.assertEquals(0, Objects.requireNonNull(entity.getBody()).getItems().size());
         Assertions.assertNull(Objects.requireNonNull(entity.getBody()).getTotalCost());
+    }
+
+    private String getCartId(String username, String uuid) {
+        if (username != null) {
+            return username;
+        }
+        return uuid;
     }
 }

@@ -37,6 +37,6 @@ public class AuthController {
         }
         UserDetails userDetails = visitorService.loadUserByUsername(authRequest.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new JwtResponse(token));
+        return ResponseEntity.ok(new JwtResponse(token, visitorService.getUserRoleNames(authRequest.getUsername())));
     }
 }

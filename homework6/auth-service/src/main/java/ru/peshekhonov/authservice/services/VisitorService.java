@@ -14,6 +14,7 @@ import ru.peshekhonov.authservice.entities.Visitor;
 import ru.peshekhonov.authservice.repositories.VisitorRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,13 @@ public class VisitorService implements UserDetailsService {
 
     public Optional<Visitor> findByUsername(String username) {
         return visitorRepository.findByUsername(username);
+    }
+
+    @Transactional
+    public List<String> getUserRoleNames(String username) throws UsernameNotFoundException {
+        Visitor visitor = findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("Пользователь '%s' не найден", username)));
+        return visitor.getRoles().stream().map(Role::getName).toList();
     }
 
     @Override

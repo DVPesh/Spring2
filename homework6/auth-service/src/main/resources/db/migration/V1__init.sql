@@ -39,7 +39,8 @@ CREATE TABLE IF NOT EXISTS visitors_roles
 
 insert into roles (name)
 values ('ROLE_USER'),
-       ('ROLE_ADMIN');
+       ('ROLE_ADMIN'),
+       ('ROLE_MANAGER');
 
 insert into visitors (username, password, email)
 values ('Dima', '$2a$12$kHYybMz2P4hCtq7GW.wf3.LamFg338C48zvPdbudyzmxCN8LuQCei', 'dima@mail.ru'),
@@ -51,4 +52,4 @@ insert into visitors_roles (visitor_id, role_id)
 values (1, 1),
        (1, 2),
        (2, 1),
-       (3, 1);
+       (4, 3);

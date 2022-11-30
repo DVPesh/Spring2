@@ -4,6 +4,7 @@ import lombok.Data;
 import ru.peshekhonov.api.dto.ProductDto;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -13,6 +14,10 @@ public class Cart {
 
     private List<CartItem> items;
     private BigDecimal totalCost;
+
+    public Cart() {
+        this.items = new ArrayList<>();
+    }
 
     public List<CartItem> getItems() {
         return Collections.unmodifiableList(items);
