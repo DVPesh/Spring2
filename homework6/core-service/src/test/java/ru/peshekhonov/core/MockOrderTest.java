@@ -50,7 +50,7 @@ public class MockOrderTest {
         CartDto cart = new CartDto();
         cart.setItems(cartItems);
         cart.setTotalCost(cartItems.get(0).getCost().add(cartItems.get(1).getCost()));
-        Mockito.when(cartService.getCurrentCart()).thenReturn(cart);
+        Mockito.when(cartService.getCurrentCart("Ann")).thenReturn(cart);
 
         OrderDetailsDto orderDetailsDto = new OrderDetailsDto();
         orderDetailsDto.setAddress("г. Новосибирск ул. Новаторов дом 34 кв 3");

@@ -5,7 +5,6 @@ import ru.peshekhonov.api.dto.ProductDto;
 import ru.peshekhonov.cart.utils.Cart;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CartUnitTest {
@@ -25,7 +24,6 @@ public class CartUnitTest {
     @BeforeAll
     public static void setUp() {
         cart = new Cart();
-        cart.setItems(new ArrayList<>());
         product1 = new ProductDto();
         product1.setId(ID_1);
         product1.setTitle("масло");

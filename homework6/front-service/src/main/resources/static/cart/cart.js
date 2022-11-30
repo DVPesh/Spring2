@@ -3,7 +3,7 @@ angular.module('market').controller('cartController', function ($rootScope, $sco
     const contextPath = 'http://localhost:5555';
 
     $scope.loadCart = function () {
-        $http.get(contextPath + '/cart/api/v1/cart')
+        $http.get(contextPath + '/cart/api/v1/cart/' + $localStorage.guestCartId)
             .then(function (response) {
                 $scope.cart = response.data;
             });
@@ -25,28 +25,28 @@ angular.module('market').controller('cartController', function ($rootScope, $sco
     }
 
     $rootScope.addToCart = function (productId) {
-        $http.get(contextPath + '/cart/api/v1/cart/add/' + productId)
+        $http.get(contextPath + '/cart/api/v1/cart/' + $localStorage.guestCartId + '/add/' + productId)
             .then(function (response) {
                 $scope.loadCart();
             });
     }
 
     $scope.subtractFromCart = function (productId) {
-        $http.get(contextPath + '/cart/api/v1/cart/subtract/' + productId)
+        $http.get(contextPath + '/cart/api/v1/cart/' + $localStorage.guestCartId + '/subtract/' + productId)
             .then(function (response) {
                 $scope.loadCart();
             });
     }
 
     $scope.removeFromCart = function (productId) {
-        $http.get(contextPath + '/cart/api/v1/cart/remove/' + productId)
+        $http.get(contextPath + '/cart/api/v1/cart/' + $localStorage.guestCartId + '/remove/' + productId)
             .then(function (response) {
                 $scope.loadCart();
             });
     }
 
     $scope.clearCart = function () {
-        $http.get(contextPath + '/cart/api/v1/cart/clear')
+        $http.get(contextPath + '/cart/api/v1/cart/' + $localStorage.guestCartId + '/clear')
             .then(function (response) {
                 $scope.loadCart();
             });

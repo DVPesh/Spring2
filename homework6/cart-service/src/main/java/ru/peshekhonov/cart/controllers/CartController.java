@@ -1,13 +1,13 @@
 package ru.peshekhonov.cart.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.peshekhonov.api.dto.CartDto;
+import ru.peshekhonov.api.dto.StringResponse;
 import ru.peshekhonov.cart.mappers.CartDtoMapper;
 import ru.peshekhonov.cart.services.CartService;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/cart")
@@ -17,28 +17,48 @@ public class CartController {
     private final CartService cartService;
     private final CartDtoMapper cartDtoMapper;
 
-    @GetMapping
-    public CartDto getCurrentCart() {
-        return cartDtoMapper.map(cartService.getCurrentCart());
+    @GetMapping("/new_uuid")
+    public StringResponse generateUuid() {
+        return new StringResponse(UUID.randomUUID().toString());
     }
 
-    @GetMapping("/add/{productId}")
-    public void addProductToCart(@PathVariable Long productId) {
-        cartService.addToCart(productId);
+    @GetMapping("/{uuid}")
+    public CartDto getCurrentCart(@RequestHeader(name = "username", required = false) String username,
+                                  @PathVariable String uuid) {
+        return cartDtoMapper.map(cartService.getCurrentCart(getCartId(username, uuid)));
     }
 
-    @GetMapping("/subtract/{productId}")
-    public void subtractProductFromCart(@PathVariable Long productId) {
-        cartService.subtractFromCart(productId);
+    @GetMapping("/{uuid}/add/{productId}")
+    public void addProductToCart(@RequestHeader(name = "username", required = false) String username,
+                                 @PathVariable String uuid,
+                                 @PathVariable Long productId) {
+        cartService.addToCart(getCartId(username, uuid), productId);
     }
 
-    @GetMapping("/remove/{productId}")
-    public void removeProductFromCart(@PathVariable Long productId) {
-        cartService.removeFromCart(productId);
+    @GetMapping("/{uuid}/subtract/{productId}")
+    public void subtractProductFromCart(@RequestHeader(name = "username", required = false) String username,
+                                        @PathVariable String uuid,
+                                        @PathVariable Long productId) {
+        cartService.subtractFromCart(getCartId(username, uuid), productId);
     }
 
-    @GetMapping("/clear")
-    public void clear() {
-        cartService.clear();
+    @GetMapping("/{uuid}/remove/{productId}")
+    public void removeProductFromCart(@RequestHeader(name = "username", required = false) String username,
+                                      @PathVariable String uuid,
+                                      @PathVariable Long productId) {
+        cartService.removeFromCart(getCartId(username, uuid), productId);
+    }
+
+    @GetMapping("/{uuid}/clear")
+    public void clear(@RequestHeader(name = "username", required = false) String username,
+                      @PathVariable String uuid) {
+        cartService.clear(getCartId(username, uuid));
+    }
+
+    private String getCartId(String username, String uuid) {
+        if (username != null) {
+            return username;
+        }
+        return uuid;
     }
 }

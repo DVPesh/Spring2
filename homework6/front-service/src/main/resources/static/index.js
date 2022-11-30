@@ -24,6 +24,13 @@
     }
 
     function run($rootScope, $http, $localStorage) {
+        if (!$localStorage.guestCartId) {
+            $http.get('http://localhost:5555/cart/api/v1/cart/new_uuid')
+                .then(function successCallback(response) {
+                    $localStorage.guestCartId = response.data.value;
+                });
+        }
+
         if ($localStorage.springWebUser) {
             try {
                 let jwt = $localStorage.springWebUser.token;

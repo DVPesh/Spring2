@@ -1,46 +1,55 @@
 package ru.peshekhonov.cart.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.peshekhonov.api.dto.ProductDto;
 import ru.peshekhonov.cart.integrations.ProductServiceIntegration;
 import ru.peshekhonov.cart.utils.Cart;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class CartService {
 
     private final ProductServiceIntegration productService;
-    private Cart cart;
+
+    @Value("${cart-service.cart-prefix}")
+    private String cartPrefix;
+
+    private Map<String, Cart> carts;
 
     @PostConstruct
     public void init() {
-        cart = new Cart();
-        cart.setItems(new ArrayList<>());
+        carts = new HashMap<>();
     }
 
-    public Cart getCurrentCart() {
-        return cart;
+    public Cart getCurrentCart(String cartId) {
+        String id = cartPrefix + cartId;
+        if (!carts.containsKey(id)) {
+            carts.put(id, new Cart());
+        }
+        return carts.get(id);
     }
 
-    public void addToCart(Long productId) {
+    public void addToCart(String cartId, Long productId) {
         ProductDto p = productService.findById(productId);
-        cart.add(p);
+        getCurrentCart(cartId).add(p);
     }
 
-    public void subtractFromCart(Long productId) {
+    public void subtractFromCart(String cartId, Long productId) {
         ProductDto p = productService.findById(productId);
-        cart.subtract(p);
+        getCurrentCart(cartId).subtract(p);
     }
 
-    public void removeFromCart(Long productId) {
-        cart.removeItem(productId);
+    public void removeFromCart(String cartId, Long productId) {
+        getCurrentCart(cartId).removeItem(productId);
     }
 
-    public void clear() {
-        cart.clear();
+    public void clear(String cartId) {
+        getCurrentCart(cartId).clear();
     }
 }
