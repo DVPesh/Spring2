@@ -10,4 +10,8 @@ import java.util.Optional;
 public interface VisitorRepository extends JpaRepository<Visitor, Long> {
 
     Optional<Visitor> findByUsername(String username);
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
 }

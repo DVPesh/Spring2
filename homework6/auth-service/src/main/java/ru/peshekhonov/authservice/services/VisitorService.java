@@ -7,10 +7,13 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.peshekhonov.api.dto.VisitorRegistrationDto;
 import ru.peshekhonov.authservice.entities.Role;
 import ru.peshekhonov.authservice.entities.Visitor;
+import ru.peshekhonov.authservice.mappers.VisitorDtoMapper;
 import ru.peshekhonov.authservice.repositories.VisitorRepository;
 
 import java.util.Collection;
@@ -23,9 +26,27 @@ import java.util.stream.Collectors;
 public class VisitorService implements UserDetailsService {
 
     private final VisitorRepository visitorRepository;
+    private final VisitorDtoMapper visitorDtoMapper;
+    private final BCryptPasswordEncoder encoder;
+    private final RoleService roleService;
 
     public Optional<Visitor> findByUsername(String username) {
         return visitorRepository.findByUsername(username);
+    }
+
+    public boolean existsByUsername(String username) {
+        return visitorRepository.existsByUsername(username);
+    }
+
+    public boolean existsByEmail(String email) {
+        return visitorRepository.existsByEmail(email);
+    }
+
+    @Transactional
+    public Visitor createUser(VisitorRegistrationDto user) {
+        Visitor visitor = visitorDtoMapper.map(user, encoder);
+        visitor.setRoles(List.of(roleService.getUserRole("USER")));
+        return visitorRepository.save(visitor);
     }
 
     @Transactional
