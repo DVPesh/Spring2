@@ -25,6 +25,11 @@ angular.module('market').controller('registrationController', function ($rootSco
                         $scope.newUser.password = '';
                         $scope.newUser.email = '';
                         $scope.passwordRepeat = '';
+
+                        $http.get(contextPath + '/cart/api/v1/cart/' + $localStorage.guestCartId + '/merge')
+                            .then(function (response) {
+                            });
+
                         $location.path('/');
                     }
                 }, function errorCallback(response) {

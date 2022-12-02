@@ -63,4 +63,23 @@ public class Cart {
             totalCost = null;
         }
     }
+
+    public void merge(Cart cart) {
+        boolean merged;
+        for (CartItem cartItem : cart.items) {
+            merged = false;
+            for (CartItem item : items) {
+                if (item.getProductId().equals(cartItem.getProductId())) {
+                    item.increaseQuantityBy(cartItem.getQuantity());
+                    merged = true;
+                    break;
+                }
+            }
+            if (!merged) {
+                items.add(cartItem);
+            }
+        }
+        recalculate();
+        cart.clear();
+    }
 }

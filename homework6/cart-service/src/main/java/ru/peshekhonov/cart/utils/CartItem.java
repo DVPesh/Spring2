@@ -31,4 +31,11 @@ public class CartItem {
         }
         return quantity;
     }
+
+    public void increaseQuantityBy(int value) {
+        if (value > 0) {
+            quantity += value;
+            cost = pricePerProduct.multiply(BigDecimal.valueOf(quantity));
+        }
+    }
 }

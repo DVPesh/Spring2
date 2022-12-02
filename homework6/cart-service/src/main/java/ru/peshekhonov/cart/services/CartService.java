@@ -51,4 +51,10 @@ public class CartService {
         operation.accept(cart);
         redisTemplate.opsForValue().set(cartPrefix + cartId, cart);
     }
+
+    public void merge(String userCartId, String guestCartId) {
+        Cart userCart = getCurrentCart(userCartId);
+        execute(guestCartId, userCart::merge);
+        redisTemplate.opsForValue().set(cartPrefix + userCartId, userCart);
+    }
 }

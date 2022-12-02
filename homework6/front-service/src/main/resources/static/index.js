@@ -78,6 +78,11 @@ angular.module('market').controller('indexController', function ($rootScope, $sc
                     $rootScope.username = $scope.user.username;
                     $scope.user.username = '';
                     $scope.user.password = '';
+
+                    $http.get(contextPath + '/cart/api/v1/cart/' + $localStorage.guestCartId + '/merge')
+                        .then(function (response) {
+                        });
+
                     $location.path('/');
                 }
             }, function errorCallback(response) {
