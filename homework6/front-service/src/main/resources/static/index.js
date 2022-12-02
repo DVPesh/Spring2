@@ -90,6 +90,8 @@ angular.module('market').controller('indexController', function ($rootScope, $sc
     $scope.tryToLogout = function () {
         $scope.clearUser();
         $rootScope.username = null;
+        $scope.user.username = '';
+        $scope.user.password = '';
         $location.path('/');
     }
 

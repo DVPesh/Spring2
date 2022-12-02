@@ -45,7 +45,7 @@ public class RegistrationController {
                     new AppError("USER_DATA_ERROR", "Такое имя пользователя уже существует"), HttpStatus.BAD_REQUEST);
         }
 
-        if (visitorService.existsByEmail(visitor.getEmail())) {
+        if (visitor.getEmail() != null && visitorService.existsByEmail(visitor.getEmail())) {
             return new ResponseEntity<>(
                     new AppError("USER_DATA_ERROR", "Такой Email уже есть"), HttpStatus.BAD_REQUEST);
         }
