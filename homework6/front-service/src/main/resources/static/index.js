@@ -18,6 +18,10 @@
                 templateUrl: 'orders/orders.html',
                 controller: 'ordersController'
             })
+            .when('/registration', {
+                templateUrl: 'users/registration.html',
+                controller: 'registrationController'
+            })
             .otherwise({
                 redirectTo: '/'
             });
@@ -56,6 +60,11 @@ angular.module('market').controller('indexController', function ($rootScope, $sc
 
     const contextPath = 'http://localhost:5555';
 
+    $scope.user = {
+        username: '',
+        password: '',
+    };
+
     $scope.tryToAuth = function () {
         $http.post(contextPath + '/auth', $scope.user)
             .then(function successCallback(response) {
@@ -67,19 +76,27 @@ angular.module('market').controller('indexController', function ($rootScope, $sc
                         roles: response.data.roles
                     };
                     $rootScope.username = $scope.user.username;
-                    $scope.user.username = null;
-                    $scope.user.password = null;
+                    $scope.user.username = '';
+                    $scope.user.password = '';
+
+                    $http.get(contextPath + '/cart/api/v1/cart/' + $localStorage.guestCartId + '/merge')
+                        .then(function (response) {
+                        });
+
                     $location.path('/');
                 }
             }, function errorCallback(response) {
-                alert(response.data.error);
+                if (response.data) {
+                    alert(response.data.error);
+                }
             });
     }
 
     $scope.tryToLogout = function () {
         $scope.clearUser();
-        $scope.user = null;
         $rootScope.username = null;
+        $scope.user.username = '';
+        $scope.user.password = '';
         $location.path('/');
     }
 

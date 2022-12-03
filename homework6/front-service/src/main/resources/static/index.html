@@ -44,6 +44,9 @@
                         </div>
                     </form>
                 </li>
+                <li class="nav-item" ng-show="!isUserLoggedIn()">
+                    <a class="nav-link" href="#!/registration">Регистрация</a>
+                </li>
                 <li class="nav-item" ng-show="isUserLoggedIn()" style="padding: 4px;">
                     <span class="badge badge-pill badge-success">{{username}}</span>
                     <button class="btn btn-outline-secondary btn-sm" ng-click="tryToLogout()">Выйти</button>
@@ -58,6 +61,7 @@
     <script src="store/store.js"></script>
     <script src="cart/cart.js"></script>
     <script src="orders/orders.js"></script>
+    <script src="users/registration.js"></script>
 </div>
 </body>
 </html>

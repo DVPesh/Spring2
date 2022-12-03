@@ -8,12 +8,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="homework8" />
-        <module name="auth-service" />
         <module name="front-service" />
         <module name="api" />
         <module name="gateway-service" />
       </profile>
-      <profile name="Annotation profile for core-service" enabled="true">
+      <profile name="Annotation profile for auth-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -22,9 +21,10 @@
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.5.2.Final/mapstruct-processor-1.5.2.Final.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.5.2.Final/mapstruct-1.5.2.Final.jar" />
         </processorPath>
-        <module name="core-service" />
+        <module name="auth-service" />
         <module name="cart-service" />
         <module name="online-store" />
+        <module name="core-service" />
       </profile>
     </annotationProcessing>
   </component>
