@@ -17,7 +17,6 @@ import java.util.Optional;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final CategoryService categoryService;
 
     public Page<Product> findAll(BigDecimal minPrice, BigDecimal maxPrice, String titlePart, String categoryTitle, Integer page) {
         Specification<Product> spec = Specification.where(null);
