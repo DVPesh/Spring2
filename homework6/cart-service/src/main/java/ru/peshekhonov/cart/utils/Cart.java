@@ -19,16 +19,27 @@ public class Cart {
     }
 
     public void add(ProductDto p) {
+        if (add(p.getId())) {
+            return;
+        }
+        items.add(new CartItem(p));
+        recalculate();
+    }
+
+    public void addNewItem(ProductDto p) {
+        items.add(new CartItem(p));
+        recalculate();
+    }
+
+    public boolean add(Long id) {
         for (CartItem item : items) {
-            if (item.getProductId().equals(p.getId())) {
+            if (item.getProductId().equals(id)) {
                 item.incrementQuantity();
                 recalculate();
-                return;
+                return true;
             }
         }
-        CartItem cartItem = new CartItem(p.getId(), p.getTitle(), 1, p.getPrice(), p.getPrice());
-        items.add(cartItem);
-        recalculate();
+        return false;
     }
 
     public void subtract(ProductDto p) {
@@ -36,6 +47,20 @@ public class Cart {
         while (iterator.hasNext()) {
             CartItem item = iterator.next();
             if (item.getProductId().equals(p.getId())) {
+                if (item.decrementQuantity() < 1) {
+                    iterator.remove();
+                }
+                recalculate();
+                return;
+            }
+        }
+    }
+
+    public void subtract(Long productId) {
+        Iterator<CartItem> iterator = items.iterator();
+        while (iterator.hasNext()) {
+            CartItem item = iterator.next();
+            if (item.getProductId().equals(productId)) {
                 if (item.decrementQuantity() < 1) {
                     iterator.remove();
                 }

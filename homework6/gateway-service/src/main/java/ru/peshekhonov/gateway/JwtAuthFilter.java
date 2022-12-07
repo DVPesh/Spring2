@@ -70,7 +70,7 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
     private void populateRequestWithHeaders(ServerWebExchange exchange, String token) {
         exchange.getRequest().mutate()
                 .header("username", jwtUtil.getUsernameFromToken(token))
-                .header("role", String.valueOf(jwtUtil.getRoles(token)))
+                .header("roles", String.valueOf(jwtUtil.getRoles(token)))
                 .build();
     }
 }

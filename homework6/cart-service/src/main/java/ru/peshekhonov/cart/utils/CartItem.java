@@ -3,6 +3,7 @@ package ru.peshekhonov.cart.utils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.peshekhonov.api.dto.ProductDto;
 
 import java.math.BigDecimal;
 
@@ -16,6 +17,10 @@ public class CartItem {
     private int quantity;
     private BigDecimal pricePerProduct;
     private BigDecimal cost;
+
+    public CartItem(ProductDto p) {
+        this(p.getId(), p.getTitle(), 1, p.getPrice(), p.getPrice());
+    }
 
     public void incrementQuantity() {
         quantity++;
