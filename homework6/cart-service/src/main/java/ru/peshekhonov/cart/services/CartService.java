@@ -21,21 +21,30 @@ public class CartService {
     private String cartPrefix;
 
     public Cart getCurrentCart(String cartId) {
-        String id = cartPrefix + cartId;
+        String id = getCartKey(cartId);
         if (Boolean.FALSE.equals(redisTemplate.hasKey(id))) {
             redisTemplate.opsForValue().set(id, new Cart());
         }
         return (Cart) redisTemplate.opsForValue().get(id);
     }
 
+    private void saveCart(String cartId, Cart cart) {
+        redisTemplate.opsForValue().set(getCartKey(cartId), cart);
+    }
+
     public void addToCart(String cartId, Long productId) {
+        Cart cart = getCurrentCart(cartId);
+        if (cart.add(productId)) {
+            saveCart(cartId, cart);
+            return;
+        }
         ProductDto p = productService.findById(productId);
-        execute(cartId, cart -> cart.add(p));
+        cart.addNewItem(p);
+        saveCart(cartId, cart);
     }
 
     public void subtractFromCart(String cartId, Long productId) {
-        ProductDto p = productService.findById(productId);
-        execute(cartId, cart -> cart.subtract(p));
+        execute(cartId, cart -> cart.subtract(productId));
     }
 
     public void removeFromCart(String cartId, Long productId) {
@@ -49,12 +58,16 @@ public class CartService {
     private void execute(String cartId, Consumer<Cart> operation) {
         Cart cart = getCurrentCart(cartId);
         operation.accept(cart);
-        redisTemplate.opsForValue().set(cartPrefix + cartId, cart);
+        saveCart(cartId, cart);
     }
 
     public void merge(String userCartId, String guestCartId) {
         Cart userCart = getCurrentCart(userCartId);
         execute(guestCartId, userCart::merge);
-        redisTemplate.opsForValue().set(cartPrefix + userCartId, userCart);
+        saveCart(userCartId, userCart);
+    }
+
+    private String getCartKey(String cartId) {
+        return cartPrefix + cartId;
     }
 }
